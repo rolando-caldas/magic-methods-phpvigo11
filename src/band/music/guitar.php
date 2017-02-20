@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: rolando
- * Date: 18/02/17
- * Time: 16:57
- */
-
 namespace Band\Music;
 
 class Guitar
@@ -22,20 +15,9 @@ class Guitar
         ];
     }
 
-    public function loadSongs() : self
+    public static function loadSongs() : self
     {
         return new self();
-    }
-
-    public function getSongs()
-    {
-        return $this->music;
-    }
-
-    public function showSongs()
-    {
-        echo "    [" . __CLASS__ . "] Canciones disponibles\n";
-        echo $this;
     }
 
     public function addSong(Song $song) : bool
@@ -47,6 +29,17 @@ class Guitar
         }
 
         return $return;
+    }
+
+    public function getSongs()
+    {
+        return $this->music;
+    }
+
+    public function showSongs()
+    {
+        echo "    [" . __CLASS__ . "] Canciones disponibles\n";
+        echo $this;
     }
 
     public function __clone()

@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: rolando
- * Date: 19/02/17
- * Time: 16:03
- */
-
 namespace Magic;
 
 use Band\Instruments\Guitar;
@@ -16,6 +9,19 @@ class Magic
 {
     private $guitar;
     private $date = '2017-02-19 20:30:45';
+
+
+    public function run(string $methodToRun) : bool
+    {
+        $return = false;
+
+        if (method_exists($this, $methodToRun)) {
+            $this->$methodToRun();
+            $return = true;
+        }
+
+        return $return;
+    }
 
     public function constructDestruct(bool $assign = false)
     {
@@ -29,6 +35,11 @@ class Magic
         }
 
         echo "\n> Finalizando prueba constructor\n";
+    }
+
+    public function constructDestruct2()
+    {
+        $this->constructDestruct(true);
     }
 
     public function call()
@@ -58,9 +69,14 @@ class Magic
             new Guitar(6, true, true, $this->date),
         ];
 
+        echo "\n> Probando invoke:\n";
+        echo   "> ================\n";
+
+        echo "> Añadimos \"Enter Sandman\" al array guitars\n";
         $song = new Song('Enter Sandman');
         $guitarsWithNewSong = array_map($song, $guitars);
 
+        echo "> Mostramos las canciones de cada objeto\n";
         foreach ($guitarsWithNewSong AS $guitar) {
             $guitar->showSongs();
         }
@@ -77,10 +93,9 @@ class Magic
         var_dump($serializedGuitar);
 
         echo "\n> Lanzando unserialize\n";
-        $this->var = unserialize($serializedGuitar);
+        $this->guitar = unserialize($serializedGuitar);
         echo "\n> Resultado unserialize\n";
-        var_dump($this->var);
-
+        var_dump($this->guitar);
     }
 
     public function getSet()

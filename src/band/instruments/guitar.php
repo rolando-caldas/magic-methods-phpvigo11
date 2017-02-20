@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: rolando
- * Date: 18/02/17
- * Time: 16:50
- */
-
 namespace Band\Instruments;
 
 /**
@@ -16,8 +9,8 @@ namespace Band\Instruments;
  * @property int strings Número de cuerdas
  * @property bool electric true para eléctrica, false para española
  * @property bool isNew true para indicar que es nueva false para segunda mano
- * @method void showSongs Muestra las canciones disponibles
- * @method bool addSong Agrega una canción a la lista disponible
+ * @method void showSongs() Muestra las canciones disponibles
+ * @method bool addSong(\Band\Music\Song $song) Agrega una canción a la lista disponible
  *
  */
 class Guitar
@@ -29,7 +22,6 @@ class Guitar
 
     public function __construct(string $strings, bool $electric, bool $isNew, string $date, bool $printConstructDestruct = false)
     {
-
         $this->features = [
             'strings' => $strings,
             'electric' => $electric,
@@ -59,6 +51,18 @@ class Guitar
         }
     }
 
+    public function __call($method, $parameters)
+    {
+        echo "    [" . __CLASS__ . "] Se ejecuta el método mágico call\n";
+        $this->loadMusic();
+
+        if(!method_exists($this->music, $method)) {
+            throw new \Exception("Method " . $method . " not available");
+        }
+
+        return call_user_func_array(array($this->music, $method), $parameters);
+    }
+
     public function __sleep()
     {
         echo "    [" . __CLASS__ . "] Se ejecuta el método mágico sleep\n";
@@ -72,18 +76,6 @@ class Guitar
         echo "    [" . __CLASS__ . "] Se ejecuta el método mágico wakeup\n";
         $this->date = new \DateTimeImmutable($this->date);
         $this->loadMusic();
-    }
-
-    public function __call($method, $parameters)
-    {
-        echo "    [" . __CLASS__ . "] Se ejecuta el método mágico call\n";
-        $this->loadMusic();
-
-        if(!method_exists($this->music, $method)) {
-            throw new \Exception("Method " . $method . " not available");
-        }
-
-        return call_user_func_array(array($this->music, $method), $parameters);
     }
 
     public function __get($name)

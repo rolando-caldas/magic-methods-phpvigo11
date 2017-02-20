@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rolando
- * Date: 19/02/17
- * Time: 20:47
- */
 
 namespace Band\Music;
 
@@ -19,14 +13,18 @@ class Song
         $this->name = $name;
     }
 
-    public function __toString()
-    {
-        return $this->name;
-    }
-
     public function __invoke(Guitar $guitar)
     {
         $guitar->addSong($this);
         return $guitar;
+    }
+
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+    public static function __set_state(array $array) {
+        return new self($array['name']);
     }
 }
